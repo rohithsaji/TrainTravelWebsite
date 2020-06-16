@@ -1,4 +1,5 @@
 # TrainTravelWebsite
+A website made with Express & NodeJS that helps to plan Train Travel.
 ## How to use
 - Insure Node and MongoDB are installed
 - Download Files in repo
