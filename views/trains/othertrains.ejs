@@ -1,0 +1,357 @@
+<%-include("../partials/header.ejs")%>
+
+<!-- <%TRAINS.forEach(function(train){%>
+    <%=train.train1%>
+    <%=train.Places%>
+    <%});%>
+ -->
+ <p class="text-center font-weight-light mt-3" style="font-size: 25px;">SELECT A TRAIN</p>
+
+<form method="POST" name="myform" action="/othertrains" onsubmit="return validateForm()">
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-2">
+            <h3>Enter Details</h3>
+            <div>
+                <div class="form-group">
+                        <p>Name :</p>
+                        <input class="form-control" type="text" name="name" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                        <p>Age :</p>
+                        <input class="form-control" type="number" name="age" placeholder="Enter age">
+                </div>
+                <div class="form-group">
+                        <p>Number of passengers :</p>
+                        <input class="form-control" type="number" name="noOfP" value="1" id="noofp" placeholder="Enter Number">
+                </div>
+                <div class="form-group">
+                        <p>Sex:</p>
+                        <select class="form-control" name="sex">
+                        <option selected disabled hidden>Select Sex:</option>
+                        <option >Male</option>
+                        <option >Female</option>
+                        <option >Other</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                        <p>Class:</p>
+                        <select class="form-control" name="Class" id="Class">
+                        <option selected disabled hidden>Select class:</option>
+                        <option>2A</option>
+                        <option >3A</option>
+                        <option >Sleeper(no AC)</option>
+                        <option >General</option>
+                        </select>
+                </div>
+                <div class="form-group d-none " id="display_fair">
+                        <p>Total Fair :</p>
+                        <input class="form-control" id="Display_Fair" name="Fair" type="text" value="Select a class for fair!" readonly>
+                </div>
+                <input  name="Date" type="text" value="<%=data.Date%>" readonly  hidden>
+                <input  name="starttime1" id="starttime1" type="text" value="" readonly hidden>
+                <input  name="endtime1" id="endtime1" type="text" value="" readonly hidden>
+                <input  name="starttime2" id="starttime2" type="text" value="" readonly hidden>
+                <input  name="endtime2" id="endtime2" type="text" value="" readonly hidden>
+                <input  name="trainname1" id="trainname1" type="text" value="" readonly hidden>
+                <input  name="trainname2" id="trainname2" type="text" value="" readonl hidden>
+                <input  name="fair1" id="fair1" type="text" value="" readonly hidden>
+                <input  name="fair2" id="fair2" type="text" value="" readonly hidden>
+                <input  name="from1" id="from1" type="text" value="<%=data.From%>" readonly hidden>
+                <input  name="middle" id="middle" type="text" value="" readonly hidden>
+                <input  name="to2" id="to2" type="text" value="<%=data.To%>" readonly hidden>
+                <button class="btn btn-primary">Submit !</button>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row  mx-2 rounded mb-1" style="height:25px" >
+                <div class="col-md-4 d-flex align-items-center justify-content-around bg-primary rounded" style="color: white;">
+                    <span><%=data.From%> </span>   <span><i class="fa fa-arrow-right" aria-hidden="true"></i> </span>          <span><%=data.To%></span>
+                </div>
+                <div class="col-md-4 text-center font-weight-bold" style="color: #007bff;">
+                    <p class="m-0 mt-1">Date:</p>
+                    <p class="m-0"><%=data.Date%></p>
+                </div>
+                <div class="col-md-4 justify-content-end font-weight-bold d-flex align-items-center" style="color:white;">
+                    <div class="container">
+                            <a class="btn btn-danger btn-block" href="/tickets/new">Reset</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 form-check">
+                <p class="text-muted pt-1 m-0 my-1">(<%=TRAINS.length%>) routes found</p>
+                <%if(TRAINS.length==0){%>
+                    <div>
+                        <p class="text-muted pt-1 m-0 my-1 text-center">SELECTED STATIONS ARE NEAR BY</p>
+                        <p class="text-muted pt-1 m-0 my-1 text-center">PLEASE SELECT A DIRECT TRAIN</p>
+                        <p class="pt-1 m-0 my-1 text-center"><a href="/foundtrains?fromStation=<%=data.From%>&toStation=<%=data.To%>&tdate=<%=data.Date%>">Go back !</a></p>
+                    </div>
+                    <%}%>
+                <%var N=0%>
+                <%TRAINS.forEach(function(train){%>
+                    <%if(train.stime1.toString().length==3){train.stime1="0"+train.stime1}%>
+                    <%if(train.stime1.toString().length==2){train.stime1="00"+train.stime1}%>
+                    <%if(train.etime1.toString().length==3){train.etime1="0"+train.etime1}%>
+                    <%if(train.etime1.toString().length==2){train.etime1="00"+train.etime1}%>
+                    <%if(train.stime2.toString().length==3){train.stime2="0"+train.stime2}%>
+                    <%if(train.stime2.toString().length==2){train.stime2="00"+train.stime2}%>
+                    <%if(train.etime2.toString().length==3){train.etime2="0"+train.etime2}%>
+                    <%if(train.etime2.toString().length==2){train.etime2="00"+train.etime2}%>            
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <div class="card-title">
+                            <h5>
+                                <i class="fa fa-subway mr-1" aria-hidden="true"></i>
+                                <span class="train1"><%=train.train1%></span>
+                                <small class="text-muted">(<%=train.id1%>)</small>
+                            </h5>
+                        </div>
+                            <div class="card-text">
+                                <p class="d-flex justify-content-between">
+                                    <span><span><%=data.From%> </span>   <span><i class="fa fa-arrow-right" aria-hidden="true"></i> </span>          <span class="middleTrain"><%=train.middle%></span>
+                                    </span>
+                                    <span>
+                                        <input class="TRAIN" name="TRAIN" type="radio" value="<%=N%>">
+                                        <%N++;%>
+                                    </span>
+                                </p>
+                                <p class="d-flex justify-content-around">
+                                    <span><strong style="color: #007bff;">Departure Time</strong>:<span class="stime1"><%=train.stime1%></span> hrs</span>
+                                    <span>
+                                    Stops:
+                                        <span class="STOPS1"><%=train.stops1%></span>    
+                                    </span>
+                                    <span><strong style="color: #007bff;"s>Arrival Time</strong>:<span class="etime1"><%=train.etime1%></span> hrs</span>
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="card-title">
+                                <h5>
+                                    <i class="fa fa-subway mr-1" aria-hidden="true"></i>
+                                    <span class="train2"><%=train.train2%></span>
+                                    <small class="text-muted">(<%=train.id2%>)</small>
+                                </h5>
+                            </div>
+                            <div class="card-text">
+                                <p class="d-flex justify-content-between">
+                                    <span><span><%=train.middle%> </span>   <span><i class="fa fa-arrow-right" aria-hidden="true"></i> </span>          <span><%=data.To%></span>
+                                    </span>
+                                </p>
+                                    <p class="d-flex justify-content-around">
+                                    <span><strong style="color: #007bff;">Departure Time</strong>:<span class="stime2"><%=train.stime2%></span> hrs</span>
+                                    <span>
+                                    Stops:
+                                        <span class="STOPS2"><%=train.stops2%></span>    
+                                    </span>
+                                    <span><strong style="color: #007bff;"s>Arrival Time</strong>:<span class="etime2"><%=train.etime2%></span> hrs</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card d-none place-card">
+                        <div class="card-body">
+                            <div class="card-title border-top-0">
+                                <h5>
+                                    Places Near <span  style="color: #007bff;"><%=train.middle%></span> Station: 
+                                </h5>
+                            </div>
+                            <div class="card-text">
+                                <div class="row font-weight-bold">
+                                    <div class="col-4">Name</div>
+                                    <div class="col-4 text-center">Type</div>
+                                    <div class="col-4 text-right ">Rating</div>
+                                </div>
+                                <%train.Places.forEach(function(place){%>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-4"><%=place.name%></div>
+                                        <div class="col-4 text-center"><%=place.type%></div>
+                                        <div class="col-4 text-right">
+                                                <%for(var i=0;i!=place.rating;i++){%>
+                                                    <span class="fa fa-star"></span>
+                                                    <%}%>       
+                                        </div>
+                                    </div>
+                                <%});%>
+                            </div>
+                        </div>
+                    </div>
+                <%});%>  
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<script>
+    function validateForm() {
+        var x = document.forms["myform"]["sex"].value;
+        var y = document.forms["myform"]["Class"].value;
+        var z = document.forms["myform"]["name"].value;
+        var a = document.forms["myform"]["age"].value;
+        var b = document.forms["myform"]["noOfP"].value;
+        if (x == "Select Sex:"||y=="Select class:"||z==""||a==""||b=="") {
+            alert("Cannot Leave any input blank");
+            return false;
+        }
+        if (x == y) {
+            alert("Same stations cannot be selected");
+            return false;
+        }
+        if(b>10){
+            alert("Ticket cannot be booked for more than 10 passengers");
+            return false;
+        }
+        var radios = document.getElementsByName("TRAIN");
+        var formValid = false;
+
+        var i = 0;
+        while (!formValid && i < radios.length) {
+            if (radios[i].checked) formValid = true;
+            i++;        
+        }
+        if (!formValid) {
+            alert("Must select some train!");
+            return false;
+        }
+    }
+        
+    var CLASS=document.getElementById("Class");
+    var STOPS,totalcost=0,cost1=0,cost2=0;
+    var stops1=document.querySelectorAll(".STOPS1");
+    var stops2=document.querySelectorAll(".STOPS2");
+    var TRAIN=document.querySelectorAll(".TRAIN");
+    var stime1=document.querySelectorAll(".stime1");
+    var etime1=document.querySelectorAll(".etime1");
+    var stime2=document.querySelectorAll(".stime2");
+    var etime2=document.querySelectorAll(".etime2");
+    var train1=document.querySelectorAll(".train1");
+    var train2=document.querySelectorAll(".train2");
+    var middleTrain=document.querySelectorAll(".middleTrain");
+    var placecard=document.querySelectorAll(".place-card");
+
+
+
+    var Display_Fair=document.getElementById("Display_Fair");
+    var display_fair=document.getElementById("display_fair");
+    var noofp=document.getElementById("noofp");
+    var fair1=document.getElementById("fair1");
+    var fair2=document.getElementById("fair2");
+    var middle=document.getElementById("middle");
+    var starttime1=document.getElementById("starttime1");
+    var endtime1=document.getElementById("endtime1");
+    var starttime2=document.getElementById("starttime2");
+    var endtime2=document.getElementById("endtime2");
+    var trainname2=document.getElementById("trainname2");
+    var trainname1=document.getElementById("trainname1");
+
+
+
+
+
+    CLASS.addEventListener("change",function(){
+       Class=CLASS.value; 
+       for(var i=0;i<train1.length;i++){
+        if(trainname1.value==train1[i].innerHTML){
+            if(Class=="2A"){
+                    cost1=stops1[i].innerHTML*105*noofp.value;
+                    cost2=stops2[i].innerHTML*105*noofp.value;
+                }
+                else if(Class=="3A"){
+                    cost1=stops1[i].innerHTML*80*noofp.value;
+                    cost2=stops2[i].innerHTML*80*noofp.value;
+                }
+                else if(Class=="Sleeper(no AC)"){
+                    cost1=stops1[i].innerHTML*60*noofp.value;
+                    cost2=stops2[i].innerHTML*60*noofp.value;
+                }
+                else if(Class="General"){
+                    cost1=stops1[i].innerHTML*20*noofp.value;
+                    cost2=stops2[i].innerHTML*20*noofp.value;
+                }   
+                // console.log("train name:"+trainName[this.value].innerHTML);
+                totalcost=cost1+cost2;
+                fair1.value=cost1;
+                fair2.value=cost2;
+                Display_Fair.value=totalcost;
+        }
+        }
+    });
+    noofp.addEventListener("change",function(){
+       Class=CLASS.value; 
+       for(var i=0;i<train1.length;i++){
+        if(trainname1.value==train1[i].innerHTML){
+                if(Class=="2A"){
+                    cost1=stops1[i].innerHTML*105*noofp.value;
+                    cost2=stops2[i].innerHTML*105*noofp.value;
+                }
+                else if(Class=="3A"){
+                    cost1=stops1[i].innerHTML*80*noofp.value;
+                    cost2=stops2[i].innerHTML*80*noofp.value;
+                }
+                else if(Class=="Sleeper(no AC)"){
+                    cost1=stops1[i].innerHTML*60*noofp.value;
+                    cost2=stops2[i].innerHTML*60*noofp.value;
+                }
+                else if(Class=="General"){
+                    cost1=stops1[i].innerHTML*20*noofp.value;
+                    cost2=stops2[i].innerHTML*20*noofp.value;
+                }   
+                // console.log("train name:"+trainName[this.value].innerHTML);
+                totalcost=cost1+cost2;
+                fair1.value=cost1;
+                fair2.value=cost2;
+                Display_Fair.value=totalcost;
+        }
+        }
+    });
+
+    
+    for(var i=0;i<TRAIN.length;i++){
+        TRAIN[i].addEventListener("click",function(){
+             Class=CLASS.value; 
+            if(Class=="2A"){
+                cost1=stops1[this.value].innerHTML*105*noofp.value;
+                cost2=stops2[this.value].innerHTML*105*noofp.value;
+            }
+            else if(Class=="3A"){
+                cost1=stops1[this.value].innerHTML*80*noofp.value;
+                cost2=stops2[this.value].innerHTML*80*noofp.value;
+            }
+            else if(Class=="Sleeper(no AC)"){
+                cost1=stops1[this.value].innerHTML*60*noofp.value;
+                cost2=stops2[this.value].innerHTML*60*noofp.value;
+            }
+            else if(Class=="General"){
+                cost1=stops1[this.value].innerHTML*20*noofp.value;
+                cost2=stops2[this.value].innerHTML*20*noofp.value;
+            }   
+            // console.log("train name:"+trainName[this.value].innerHTML);
+            totalcost=cost1+cost2;
+            fair1.value=cost1;
+            fair2.value=cost2;
+            Display_Fair.value=totalcost;
+            trainname1.value=train1[this.value].innerHTML;
+            trainname2.value=train2[this.value].innerHTML;
+            starttime1.value=stime1[this.value].innerHTML;
+            endtime1.value=etime1[this.value].innerHTML;
+            starttime2.value=stime2[this.value].innerHTML;
+            endtime2.value=etime2[this.value].innerHTML;
+            middle.value=middleTrain[this.value].innerHTML;
+            display_fair.classList.remove("d-none");
+            for(var j=0;j<placecard.length;j++){
+                if(j==this.value){
+                    placecard[j].classList.remove("d-none");
+                }
+                else{
+                    placecard[j].classList.add("d-none");
+                }
+            }
+        });
+    }
+  
+    console.log(cost);
+</script>
+
+
+<%-include("../partials/footer.ejs")%>

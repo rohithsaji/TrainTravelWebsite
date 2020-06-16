@@ -1,0 +1,49 @@
+<%-include("../partials/header.ejs")%>
+<div class="container" style="margin-top: 20px;">
+    <h3 style="text-align: center;">Book Your Ticket</h3>
+    <form name="myform" action="/foundtrains" method="GET" style="width: 30%; margin:0 auto;" onsubmit="return validateForm()">
+        <div class="form-group"> 
+            <p>From :</p>
+            <select name="fromStation"  class="form-control">
+                    <option selected disabled hidden>Select From:</option>
+                    <%station.forEach(function(station){%>
+                        <option><%=station.name%></option>
+                    <%})%>
+            </select>
+        </div>
+        <div class="form-group">
+            <p>To :</p>
+            <select  name="toStation"  class="form-control">
+                    <option selected disabled hidden>Select From:</option>
+                    <%station.forEach(function(station){%>
+                        <option><%=station.name%></option>
+                    <%})%>
+            </select>
+        </div>
+        <div class="form-group">
+            <p>Date :</p>
+            <input class="form-control" type="date" name="tdate" min="<%=dateToday%>">
+            
+        </div>
+        <button class="btn btn-lg btn-block btn-primary">Submit!</button>
+        <a href="/campgrounds">Go Back!</a>
+    </form>
+    <script>
+        function validateForm() {
+            var x = document.forms["myform"]["fromStation"].value;
+            var y = document.forms["myform"]["toStation"].value;
+            var z = document.forms["myform"]["tdate"].value;
+
+            if (x == "Select From:"||y=="Select From:"||z=="") {
+                alert("Cannot Leave any input blank");
+                return false;
+            }
+            if (x == y) {
+                alert("Same stations cannot be selected");
+                return false;
+            }
+           
+            }
+    </script>
+</div>
+<%-include("../partials/footer.ejs")%>

@@ -1,0 +1,33 @@
+<%-include("../partials/header.ejs")%>
+<style>
+        body{
+                background: #282828;
+        }
+</style>
+
+<div id="carouselExampleSlidesOnly" class="carousel slide " data-ride="carousel" data-interval="2700" >
+                <div class="carousel-inner">
+                <div class="carousel-item active" style="width:100%; height: auto;  max-height:900px;" >
+                        <img class="d-block w-100" src="/1.jpg" >
+                </div>
+
+                <div class="carousel-item" style="width:100%; height: auto; max-height:900px; ">
+                        <img class="d-block w-100" src="/2.jpg" >
+                        
+                </div>
+                <div class="carousel-item" style="width:100%; height: auto;  max-height:900px;">
+                        <img class="d-block w-100" src="/3.jpg" >
+                </div>
+                <div class="carousel-caption d-flex  h-100 align-items-center justify-content-center m-0 p-0">
+                        <div>
+                                <h1>Book your train now!</h1>
+                                <p><a href="/tickets/new"><button class="btn btn-primary">Book Now!</button></a>
+                                </p>
+                        </div>
+                        
+                        
+                </div>
+        </div>
+</div>
+
+<%-include("../partials/footer.ejs")%>

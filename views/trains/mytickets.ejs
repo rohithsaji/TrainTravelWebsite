@@ -1,0 +1,60 @@
+<%-include("../partials/header.ejs")%>
+
+<p class="text-center font-weight-light mt-3" style="font-size: 25px;">My Tickets</p>
+<div class="container">  
+    <%ticket.forEach(function(ticket){%>
+        <div class="card mb-3">
+                <div class="card-body pb-3">
+                    <div class="d-flex justify-content-between">
+                        <span>
+                            <Strong style="color: #007bff">Booked Under: </Strong><%=ticket.name%>
+                        </span>
+                        <span>
+                            <Strong style="color: #007bff">Date: </Strong> <%=ticket.date%>
+                        </span>
+                        <span class="text-muted">
+                            (Ticket id: <%=ticket._id%>)
+                        </span>
+                    </div>
+                    <%ticket.trainDetails.forEach(function(train){%>
+                    <hr>
+                    <div class="card-title">
+                    <h5>
+                        <i class="fa fa-subway mr-1" aria-hidden="true"></i>
+                        <%=train.train_name%>
+                    </h5>
+                </div>
+                    <div class="card-text">
+                        <form method="POST" action="/mytickets/<%=ticket._id%>?_method=DELETE">
+                        <p class="d-flex justify-content-between">
+                            <span><span><%=train.From%></span> <span><i class="fa fa-arrow-right" aria-hidden="true"></i> </span><span><%=train.To%></span>
+                            </span>
+                            <%if(ticket.trainDetails.length==1){%>
+                            <span><button class="btn  btn-danger btn-sm">Delete Ticket!</button></span>
+                           <%};%>
+                        </p>
+                        </form>
+                            <p class="d-flex justify-content-around">
+                            <span><strong style="color: #007bff;">Departure Time</strong>:<%=train.startTime%> hrs</span>
+                            <span><strong style="color: green;">Fair</strong>: <i class="fas fa-rupee-sign"></i><%=train.fair%></span>
+                            <span><strong style="color: #007bff;">Arrival Time</strong>:<%=train.endTime%> hrs</span>
+                        </p>
+                    </div>
+            <%});%>
+            
+            <%if(ticket.trainDetails.length==2){%>
+                <hr class="mb-3">
+                <form method="POST" action="/mytickets/<%=ticket._id%>?_method=DELETE">
+                <div class="d-flex justify-content-between">
+                    <span><strong style="color: green;">Total Fair</strong>: <i class="fas fa-rupee-sign"></i><%=ticket.trainDetails[0].fair+ticket.trainDetails[1].fair%></span>
+                    <span><button class="btn  btn-danger btn-sm">Delete Ticket!</button></span>
+                </div>
+            </form>
+                <%};%>
+            </div>
+        </div>
+    <%});%>
+    <a href="/tickets/new">Book a new Ticket!</a>
+</div>
+
+<%-include("../partials/footer.ejs")%>

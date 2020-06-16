@@ -1,0 +1,264 @@
+<%-include("../partials/header.ejs")%>
+<!-- stopped at trying to pass number of stops -->
+<p class="text-center font-weight-light mt-3" style="font-size: 25px;">SELECT A TRAIN</p>
+
+<form method="POST" name="myform" action="/foundtrains" onsubmit="return validateForm()">
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-2">
+            <h3>Enter Details</h3>
+            <div>
+                <div class="form-group">
+                        <p>Name :</p>
+                        <input class="form-control" type="text" name="name" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                        <p>Age :</p>
+                        <input class="form-control" type="number" name="age" placeholder="Enter age">
+                </div>
+                <div class="form-group">
+                        <p>Number of passengers :</p>
+                        <input class="form-control" type="number" name="noOfP" value="1" id="noofp" placeholder="Enter Number">
+                </div>
+                <div class="form-group">
+                        <p>Sex:</p>
+                        <select class="form-control" name="sex">
+                        <option selected disabled hidden>Select Sex:</option>
+                        <option >Male</option>
+                        <option >Female</option>
+                        <option >Other</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                        <p>Class:</p>
+                        <select class="form-control" name="Class" id="Class">
+                        <option selected disabled hidden>Select class:</option>
+                        <option>2A</option>
+                        <option >3A</option>
+                        <option >Sleeper(no AC)</option>
+                        <option >General</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                        <p>To :</p>
+                        <input class="form-control" name="To" type="text" value="<%=data.To%>" readonly>
+                </div>
+                <div class="form-group">
+                        <p>From :</p>
+                        <input class="form-control" name="From" type="text" value="<%=data.From%>" readonly>
+                </div>
+                <div class="form-group d-none " id="display_name">
+                        <p>Train Selected :</p>
+                        <input class="form-control" id="Display_Name" name="trainName" type="text" value="" readonly>
+                </div>
+                <div class="form-group d-none " id="display_fair">
+                        <p>Fair :</p>
+                        <input class="form-control" id="Display_Fair" name="Fair" type="text" value="Select a Class for fair!" readonly>
+                </div>
+                <input  name="Date" type="text" value="<%=data.Date%>" readonly hidden>
+                <input  name="starttime" id="starttime" type="text" value="" readonly hidden>
+                <input  name="endtime" id="endtime" type="text" value="" readonly hidden>
+                <button class="btn btn-primary">Submit !</button>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row  mx-2 rounded mb-1" style="height:25px" >
+                <div class="col-md-4 d-flex align-items-center justify-content-around bg-primary rounded" style="color: white;">
+                    <span><%=data.From%> </span>   <span><i class="fa fa-arrow-right" aria-hidden="true"></i> </span>          <span><%=data.To%></span>
+                </div>
+                <div class="col-md-4 text-center font-weight-bold" style="color: #007bff;">
+                    <p class="m-0 mt-1">Date:</p>
+                    <p class="m-0"><%=data.Date%></p>
+                </div>
+                <div class="col-md-4 justify-content-end font-weight-bold d-flex align-items-center" style="color:white;">
+                    <div class="container">
+                            <a class="btn btn-danger btn-block" href="/tickets/new">Reset</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 form-check">
+                <p class="text-muted pt-1 m-0 my-1">(<%=found.length%>) trains found</p>
+                <%var N=0%>
+                <%found.forEach(function(train){%>
+                    <%var to,from,i,j,n=0;%>
+                    <%train.stops.forEach(function(station){%>
+                    <%n++;%>
+                    <%if(station.id.name==data.To){%>
+                    <%j=n%>
+                    <%to=station.time}%>
+                    <%if(station.id.name==data.From){%>
+                    <%i=n%>                    
+                    <%from=station.time}%>
+                    <%});%>
+                    <%if(to.toString().length==3){to="0"+to}%>
+                    <%if(to.toString().length==2){to="00"+to}%>
+                    <%if(from.toString().length==3){from="0"+from}%>
+                    <%if(from.toString().length==2){from="00"+from}%>
+                    <%n=j-i%>            
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="card-title">
+                            <h5>
+                                <i class="fa fa-subway mr-1" aria-hidden="true"></i>
+                                <span class="trainName"><%=train.name%></span>
+                                <small class="text-muted">(<%=train._id%>)</small>
+                            </h5>
+                        </div>
+                            <div class="card-text">
+                                <p class="d-flex justify-content-between">
+                                    <span><span><%=data.From%> </span>   <span><i class="fa fa-arrow-right" aria-hidden="true"></i> </span>          <span><%=data.To%></span>
+                                    </span>
+                                    <span>
+                                            <input class="TRAIN" name="TRAIN" type="radio" value="<%=N%>">
+                                            <%N++;%>
+                                    </span>
+                                </p>
+                                    <p class="d-flex justify-content-around">
+                                    <span><strong style="color: #007bff;">Departure Time</strong>:<span class="stime"><%=from%></span> hrs</span>
+                                    <span>
+                                    Stops:
+                                        <span class="STOPS"><%=n%></span>    
+                                    </span>
+                                    <span><strong style="color: #007bff;"s>Arrival Time</strong>:<span class="etime"><%=to%></span> hrs</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <%});%>  
+                <div class="container">
+                    <a href="/othertrains?from=<%=data.From%>&to=<%=data.To%>&Date=<%=data.Date%>">View Indirect Trains</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<script>
+    function validateForm() {
+        var x = document.forms["myform"]["sex"].value;
+        var y = document.forms["myform"]["Class"].value;
+        var z = document.forms["myform"]["name"].value;
+        var a = document.forms["myform"]["age"].value;
+        var b = document.forms["myform"]["noOfP"].value;
+        if (x == "Select Sex:"||y=="Select class:"||z==""||a==""||b=="") {
+            alert("Cannot Leave any input blank");
+            return false;
+        }
+        if (x == y) {
+            alert("Same stations cannot be selected");
+            return false;
+        }
+        if(b>10){
+            alert("Ticket cannot be booked for more than 10 passengers");
+            return false;
+        }
+        var radios = document.getElementsByName("TRAIN");
+        var formValid = false;
+
+        var i = 0;
+        while (!formValid && i < radios.length) {
+            if (radios[i].checked) formValid = true;
+            i++;        
+        }
+        if (!formValid) {
+            alert("Must select some train!");
+            return false;
+        }
+    }
+        
+    var CLASS=document.getElementById("Class");
+    var STOPS;
+    var noOfStop=document.querySelectorAll(".STOPS"),cost=0;
+    var TRAIN=document.querySelectorAll(".TRAIN");
+    var stime=document.querySelectorAll(".stime");
+    var etime=document.querySelectorAll(".etime");
+    var trainName=document.querySelectorAll(".trainName");
+    var Display_Fair=document.getElementById("Display_Fair");
+    var Display_Name=document.getElementById("Display_Name");
+    var display_name=document.getElementById("display_name");
+    var display_fair=document.getElementById("display_fair");
+    var noofp=document.getElementById("noofp");
+    var starttime=document.getElementById("starttime");
+    var endtime=document.getElementById("endtime");
+
+
+
+    CLASS.addEventListener("change",function(){
+       Class=CLASS.value; 
+       for(var i=0;i<trainName.length;i++){
+            STOPS=noOfStop[i].innerHTML;
+           if(trainName[i].innerHTML==Display_Name.value)
+           {
+            if(Class=="2A"){
+                cost=STOPS*105*noofp.value;
+            }
+            else if(Class=="3A"){
+                cost=STOPS*80*noofp.value;
+            }
+            else if(Class=="Sleeper(no AC)"){
+                cost=STOPS*60*noofp.value;
+            }
+            else if(Class=="General"){
+                cost=STOPS*20*noofp.value;
+            
+            }  
+            Display_Fair.value=cost;
+
+           }
+       }
+    });
+    noofp.addEventListener("change",function(){
+       Class=CLASS.value; 
+       for(var i=0;i<trainName.length;i++){
+            STOPS=noOfStop[i].innerHTML;
+           if(trainName[i].innerHTML==Display_Name.value)
+           {
+            if(Class=="2A"){
+                cost=STOPS*105*noofp.value;
+            }
+            else if(Class=="3A"){
+                cost=STOPS*80*noofp.value;
+            }
+            else if(Class=="Sleeper(no AC)"){
+                cost=STOPS*60*noofp.value;
+            }
+            else if(Class=="General"){
+                cost=STOPS*20*noofp.value;
+            
+            }  
+            Display_Fair.value=cost;
+
+           }
+       }
+    });
+
+    
+    for(var i=0;i<TRAIN.length;i++){
+        TRAIN[i].addEventListener("click",function(){
+            STOPS=noOfStop[this.value].innerHTML;
+            if(Class=="2A"){
+                cost=STOPS*105*noofp.value;
+            }
+            else if(Class=="3A"){
+                cost=STOPS*80*noofp.value;
+            }
+            else if(Class=="Sleeper(no AC)"){
+                cost=STOPS*60*noofp.value;
+            }
+            else if(Class=="General"){
+                cost=STOPS*20*noofp.value;
+            }   
+            console.log("train name:"+trainName[this.value].innerHTML);
+            Display_Name.value=trainName[this.value].innerHTML;
+            starttime.value=stime[this.value].innerHTML;
+            endtime.value=etime[this.value].innerHTML;
+            Display_Fair.value=cost;
+            display_name.classList.remove("d-none");
+            display_fair.classList.remove("d-none");
+
+        });
+    }
+  
+    console.log(cost);
+</script>
+<%-include("../partials/footer.ejs")%>
