@@ -3,9 +3,10 @@
 - Insure Node and MongoDB are installed
 - Download Files in repo
 - Open downloaded directory in commandline
-- Type : node app.js
+- Enter : ```node app.js``` (To start local server)
 - Open link: http://localhost:3000/trains
 
 
 ## Note
 - Works best in chrome and in full screen mode.
+ 
