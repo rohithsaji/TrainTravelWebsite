@@ -1,6 +1,6 @@
 # TrainTravelWebsite
 ## How to use
-- Insure Node and Mongo are installed
+- Insure Node and MongoDB are installed
 - Download Files in repo
 - Open downloaded directory in commandline
 - Type : node app.js
