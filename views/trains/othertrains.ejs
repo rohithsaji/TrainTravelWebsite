@@ -45,7 +45,7 @@
                         </select>
                 </div>
                 <div class="form-group d-none " id="display_fair">
-                        <p>Total Fair :</p>
+                        <p>Total Fare :</p>
                         <input class="form-control" id="Display_Fair" name="Fair" type="text" value="Select a class for fair!" readonly>
                 </div>
                 <input  name="Date" type="text" value="<%=data.Date%>" readonly  hidden>
@@ -98,7 +98,7 @@
                     <%if(train.stime2.toString().length==2){train.stime2="00"+train.stime2}%>
                     <%if(train.etime2.toString().length==3){train.etime2="0"+train.etime2}%>
                     <%if(train.etime2.toString().length==2){train.etime2="00"+train.etime2}%>            
-                    <div class="card mt-2">
+                    <div class="card mt-4">
                         <div class="card-body">
                             <div class="card-title">
                             <h5>
@@ -200,6 +200,10 @@
         }
         if(b>10){
             alert("Ticket cannot be booked for more than 10 passengers");
+            return false;
+        }
+        if(a<=12 && b==1){
+            alert("Person needs to above the age of 12 to travel alone ");
             return false;
         }
         var radios = document.getElementsByName("TRAIN");

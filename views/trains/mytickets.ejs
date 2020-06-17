@@ -3,7 +3,7 @@
 <p class="text-center font-weight-light mt-3" style="font-size: 25px;">My Tickets</p>
 <div class="container">  
     <%ticket.forEach(function(ticket){%>
-        <div class="card mb-3">
+        <div class="card mb-4">
                 <div class="card-body pb-3">
                     <div class="d-flex justify-content-between">
                         <span>
@@ -36,7 +36,7 @@
                         </form>
                             <p class="d-flex justify-content-around">
                             <span><strong style="color: #007bff;">Departure Time</strong>:<%=train.startTime%> hrs</span>
-                            <span><strong style="color: green;">Fair</strong>: <i class="fas fa-rupee-sign"></i><%=train.fair%></span>
+                            <span><strong style="color: green;">Fare</strong>: <i class="fas fa-rupee-sign"></i><%=train.fair%></span>
                             <span><strong style="color: #007bff;">Arrival Time</strong>:<%=train.endTime%> hrs</span>
                         </p>
                     </div>
@@ -46,7 +46,7 @@
                 <hr class="mb-3">
                 <form method="POST" action="/mytickets/<%=ticket._id%>?_method=DELETE">
                 <div class="d-flex justify-content-between">
-                    <span><strong style="color: green;">Total Fair</strong>: <i class="fas fa-rupee-sign"></i><%=ticket.trainDetails[0].fair+ticket.trainDetails[1].fair%></span>
+                    <span><strong style="color: green;">Total Fare</strong>: <i class="fas fa-rupee-sign"></i><%=ticket.trainDetails[0].fair+ticket.trainDetails[1].fair%></span>
                     <span><button class="btn  btn-danger btn-sm">Delete Ticket!</button></span>
                 </div>
             </form>

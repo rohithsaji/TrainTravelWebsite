@@ -39,11 +39,11 @@
                         <option >General</option>
                         </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group d-none">
                         <p>To :</p>
                         <input class="form-control" name="To" type="text" value="<%=data.To%>" readonly>
                 </div>
-                <div class="form-group">
+                <div class="form-group d-none">
                         <p>From :</p>
                         <input class="form-control" name="From" type="text" value="<%=data.From%>" readonly>
                 </div>
@@ -52,7 +52,7 @@
                         <input class="form-control" id="Display_Name" name="trainName" type="text" value="" readonly>
                 </div>
                 <div class="form-group d-none " id="display_fair">
-                        <p>Fair :</p>
+                        <p>Fare :</p>
                         <input class="form-control" id="Display_Fair" name="Fair" type="text" value="Select a Class for fair!" readonly>
                 </div>
                 <input  name="Date" type="text" value="<%=data.Date%>" readonly hidden>
@@ -95,7 +95,7 @@
                     <%if(from.toString().length==3){from="0"+from}%>
                     <%if(from.toString().length==2){from="00"+from}%>
                     <%n=j-i%>            
-                    <div class="card mb-2">
+                    <div class="card mt-4">
                         <div class="card-body">
                             <div class="card-title">
                             <h5>
@@ -121,6 +121,34 @@
                                     </span>
                                     <span><strong style="color: #007bff;"s>Arrival Time</strong>:<span class="etime"><%=to%></span> hrs</span>
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card d-none place-card">
+                        <div class="card-body">
+                            <div class="card-title border-top-0">
+                                <h5>
+                                    Places Near <span  style="color: #007bff;"><%=data.To%></span> Station: 
+                                </h5>
+                            </div>
+                            <div class="card-text">
+                                <div class="row font-weight-bold">
+                                    <div class="col-4">Name</div>
+                                    <div class="col-4 text-center">Type</div>
+                                    <div class="col-4 text-right ">Rating</div>
+                                </div>
+                                <%places.forEach(function(place){%>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-4"><%=place.name%></div>
+                                        <div class="col-4 text-center"><%=place.type%></div>
+                                        <div class="col-4 text-right">
+                                                <%for(var i=0;i!=place.rating;i++){%>
+                                                    <span class="fa fa-star"></span>
+                                                    <%}%>       
+                                        </div>
+                                    </div>
+                                <%});%>
                             </div>
                         </div>
                     </div>
@@ -172,6 +200,8 @@
     var TRAIN=document.querySelectorAll(".TRAIN");
     var stime=document.querySelectorAll(".stime");
     var etime=document.querySelectorAll(".etime");
+    var pcard=document.querySelectorAll(".place-card");
+
     var trainName=document.querySelectorAll(".trainName");
     var Display_Fair=document.getElementById("Display_Fair");
     var Display_Name=document.getElementById("Display_Name");
@@ -255,7 +285,15 @@
             Display_Fair.value=cost;
             display_name.classList.remove("d-none");
             display_fair.classList.remove("d-none");
-
+            for(var j=0;j<pcard.length;j++){
+                console.log("ok");
+                if(j==this.value){
+                    pcard[j].classList.remove("d-none");
+                }
+                else{
+                    pcard[j].classList.add("d-none");
+                }
+            }
         });
     }
   
