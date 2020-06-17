@@ -10,4 +10,5 @@ A website made with Express & NodeJS that helps to plan Train Travel.
 
 ## Note
 - Works best in chrome and in full screen mode.
+- Insure internet connection is available while running it
  
