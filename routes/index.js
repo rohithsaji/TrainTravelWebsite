@@ -8,7 +8,7 @@ router.get("/logout",function(req,res){
     if(req.isAuthenticated()){
         req.logOut();
         req.flash("success","You have logged Out");
-        res.redirect("/trains");
+        res.redirect("/login");
     }
     else{
         req.flash("error","No user is Logged In");
