@@ -42,7 +42,7 @@ router.get("/foundtrains",middleware.isLoggedIn,function(req,res){
         From:req.query.fromStation,
         Date:req.query.tdate,
     }
-    stations.findOne({name:data.To},function(er,toStation){
+    stations.findOne({name:data.To}).populate("places").exec(function(er,toStation){
         stations.findOne({name:data.From},function(er,fromStation){
             var From=fromStation,To=toStation;
             trains.find({"stops.id":{$all:[From._id,To._id]}}).populate("stops.id").exec(function(er,Found){
@@ -57,8 +57,8 @@ router.get("/foundtrains",middleware.isLoggedIn,function(req,res){
                         i++;
                     }
                 }
-                // console.log("added"+Found);
-                res.render("trains/foundtrains.ejs",{found:Found,data:data});
+                console.log("added"+toStation.places);
+                res.render("trains/foundtrains.ejs",{found:Found,data:data,places: toStation.places});
             });
         });
    }); 
